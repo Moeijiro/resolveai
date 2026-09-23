@@ -35,6 +35,16 @@ def stem(token: str) -> str:
             root = token[: -len(suffix)]
             if suffix in ("ies", "ied"):
                 return root + "y"
+            # "resetting" → "resett" → "reset", "running" → "run": undo the
+            # doubled consonant English adds before -ing/-ed (but keep "ll",
+            # "ss", "zz", which belong to the word: "called", "passed").
+            if (
+                suffix in ("ing", "ed")
+                and len(root) >= 4
+                and root[-1] == root[-2]
+                and root[-1] not in "aeiouylsz"
+            ):
+                return root[:-1]
             return root
     return token
 
