@@ -182,3 +182,10 @@ def test_conversations_can_be_filtered_by_status(auth_client: TestClient, knowle
     page = auth_client.get("/api/conversations", params={"status": status}).json()
     assert page["total"] == 1
     assert page["items"][0]["status"] == status
+
+
+def test_article_excerpt_is_plain_text():
+    from app.api.routes.knowledge import excerpt
+
+    text = excerpt("# API Keys\n\nOpen **Settings → API keys** and see [the docs](https://x.test).\n\n## Rotate\n- Use `rotate`.")
+    assert text == "Open Settings → API keys and see the docs. Use rotate."

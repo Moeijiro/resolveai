@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 from fastapi import APIRouter, Depends, File, Query, Response, UploadFile, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
@@ -66,15 +68,31 @@ def kb_out(db: Session, kb: KnowledgeBase) -> KnowledgeBaseOut:
     )
 
 
+EXCERPT_CHARS = 180
+_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
+_EMPHASIS_RE = re.compile(r"\*\*|__|`")
+
+
+def excerpt(content: str) -> str:
+    """Plain-text preview: headings dropped (they repeat the title), Markdown
+    emphasis and link syntax removed."""
+    lines = [
+        line.strip().lstrip("-*> ").strip()
+        for line in content.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    text = _EMPHASIS_RE.sub("", _LINK_RE.sub(r"\1", " ".join(lines)))
+    return text[:EXCERPT_CHARS].rstrip() + ("…" if len(text) > EXCERPT_CHARS else "")
+
+
 def summary(article: Article) -> ArticleSummary:
-    text = " ".join(line.lstrip("#-* ") for line in article.content.splitlines() if line.strip())
     return ArticleSummary(
         id=article.id,
         knowledge_base_id=article.knowledge_base_id,
         title=article.title,
         category=article.category,
         source=article.source,
-        excerpt=text[:180] + ("…" if len(text) > 180 else ""),
+        excerpt=excerpt(article.content),
         created_at=article.created_at,
         updated_at=article.updated_at,
     )

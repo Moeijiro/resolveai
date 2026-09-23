@@ -150,7 +150,7 @@ export default function KnowledgeBaseDetailPage() {
                         <span className="truncate text-sm">{article.title}</span>
                         {article.source === "upload" ? <Badge tone="violet">uploaded</Badge> : null}
                       </span>
-                      <span className="mt-0.5 line-clamp-1 block text-xs text-[var(--color-ink-subtle)]">{article.excerpt}</span>
+                      <span className="mt-0.5 line-clamp-1 text-xs text-[var(--color-ink-subtle)]">{article.excerpt}</span>
                     </span>
                     {article.category ? <Badge className="hidden sm:inline-flex">{article.category}</Badge> : null}
                     <span className="hidden w-20 text-right text-[11px] text-[var(--color-ink-subtle)] md:block">{relativeTime(article.updated_at)}</span>
