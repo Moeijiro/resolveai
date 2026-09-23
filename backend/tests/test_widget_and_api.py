@@ -155,3 +155,25 @@ def test_the_overview_counts_come_from_conversations(auth_client: TestClient, kn
     assert overview["unresolved"] == 1
     assert overview["top_articles"][0]["title"] == "Authentication"
     assert len(overview["series"]) == 14
+
+
+def test_a_paused_knowledge_base_refuses_the_widget_and_the_api(auth_client: TestClient, knowledge_base) -> None:
+    kb_id = knowledge_base["id"]
+    public_id = auth_client.get(f"/api/knowledge-bases/{kb_id}/widget").json()["public_id"]
+    key = auth_client.post("/api/keys", json={"name": "Backend"}).json()["key"]
+    assert auth_client.patch(f"/api/knowledge-bases/{kb_id}", json={"status": "paused"}).status_code == 200
+
+    widget = auth_client.post(
+        "/widget/chat",
+        content=json.dumps({"project": public_id, "question": "How do I reset my password?"}),
+        headers={"Content-Type": "text/plain"},
+    )
+    api = auth_client.post(
+        "/v1/ask",
+        json={"knowledge_base_id": kb_id, "question": "How do I reset my password?"},
+        headers={"X-API-Key": key},
+    )
+    assert widget.status_code == 404
+    assert api.status_code == 409
+    # The owner can still test it from the dashboard.
+    assert auth_client.post("/api/chat", json={"knowledge_base_id": kb_id, "question": "How do I reset my password?"}).status_code == 200

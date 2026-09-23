@@ -82,3 +82,9 @@ def test_unsupported_uploads_are_refused(auth_client: TestClient, knowledge_base
         files={"file": ("guide.pdf", b"%PDF-1.7", "application/pdf")},
     )
     assert response.status_code == 422
+
+
+def test_passwords_must_be_at_least_ten_characters(client: TestClient) -> None:
+    response = client.post("/api/auth/register", json={"email": "short@example.com", "password": "123456789"})
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "validation_error"

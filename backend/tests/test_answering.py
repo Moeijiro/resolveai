@@ -189,3 +189,28 @@ def test_article_excerpt_is_plain_text():
 
     text = excerpt("# API Keys\n\nOpen **Settings → API keys** and see [the docs](https://x.test).\n\n## Rotate\n- Use `rotate`.")
     assert text == "Open Settings → API keys and see the docs. Use rotate."
+
+
+def test_a_provider_failure_is_recorded_as_an_error(auth_client: TestClient, knowledge_base, monkeypatch) -> None:
+    """A timeout or outage upstream becomes status "error", never a 500."""
+    from app.ai.base import ProviderError
+
+    class DownProvider:
+        name = "down"
+
+        async def answer(self, question, passages):  # noqa: ANN001
+            raise ProviderError("AI provider unreachable: ReadTimeout")
+
+    monkeypatch.setattr("app.services.answering.get_provider", lambda: DownProvider())
+    response = auth_client.post(
+        "/api/chat",
+        json={"knowledge_base_id": knowledge_base["id"], "question": "How do I reset my password?"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "error"
+    assert body["sources"] == []
+    assert "ReadTimeout" not in body["answer"]
+
+    stored = auth_client.get("/api/conversations", params={"status": "error"}).json()["items"][0]
+    assert "ReadTimeout" in stored["error"]
