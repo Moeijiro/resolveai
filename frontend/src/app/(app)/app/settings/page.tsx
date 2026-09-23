@@ -24,7 +24,7 @@ export default function SettingsPage() {
   return (
     <>
       <PageHeader title="Settings" />
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader title="Account" />
           <CardBody>
@@ -53,7 +53,7 @@ export default function SettingsPage() {
         <Card className="lg:col-span-2">
           <CardHeader title="How answers are decided" />
           <CardBody>
-            <ol className="grid gap-4 text-xs leading-relaxed text-[var(--color-ink-muted)] sm:grid-cols-3">
+            <ol className="grid grid-cols-1 gap-4 text-xs leading-relaxed text-[var(--color-ink-muted)] sm:grid-cols-3">
               <li><span className="mb-1 block font-mono text-[var(--color-accent)]">1 · retrieve</span>Articles are split into passages at their headings and ranked with BM25 against the question.</li>
               <li><span className="mb-1 block font-mono text-[var(--color-accent)]">2 · gate</span>If the best passages don&apos;t cover at least half of the question&apos;s key terms, the question is marked unresolved and the model is never called.</li>
               <li><span className="mb-1 block font-mono text-[var(--color-accent)]">3 · answer</span>The provider answers from those passages only; the sources shown are the retrieved articles it actually used.</li>

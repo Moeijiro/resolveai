@@ -42,7 +42,7 @@ export default function KnowledgeBasesPage() {
 
       {creating ? (
         <Card className="mb-4">
-          <form onSubmit={create} className="grid gap-4 p-5 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+          <form onSubmit={create} className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
             <Field label="Name" htmlFor="kb-name">
               <Input id="kb-name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Documentation" autoFocus />
             </Field>
@@ -60,7 +60,7 @@ export default function KnowledgeBasesPage() {
       ) : list.error ? (
         <ErrorNote message={list.error} />
       ) : list.data?.length ? (
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {list.data.map((kb) => (
             <Link key={kb.id} href={`/app/knowledge-bases/${kb.id}`} className="group">
               <Card className="h-full p-5 transition-colors group-hover:border-[var(--color-border-strong)]">

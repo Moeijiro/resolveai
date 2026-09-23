@@ -98,7 +98,7 @@ export default function KnowledgeBaseDetailPage() {
         </p>
       ) : null}
 
-      <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.25fr_1fr]">
         <Card>
           <CardHeader
             title="Articles"

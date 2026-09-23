@@ -54,7 +54,7 @@ export default function OverviewPage() {
         <Stat label="Avg. response" value={data.avg_response_ms == null ? "—" : `${Math.round(data.avg_response_ms)} ms`} hint={`${data.articles} articles · ${data.knowledge_bases} KB`} />
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1.6fr_1fr]">
         <Card>
           <CardHeader title="Last 14 days" description="Daily questions by outcome" />
           <CardBody><ActivityChart series={data.series} /></CardBody>
@@ -77,7 +77,7 @@ export default function OverviewPage() {
         </Card>
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader
             title="Unresolved questions"

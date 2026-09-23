@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { MotionConfig, motion } from "motion/react";
 import { Logo } from "@/components/app/logo";
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
@@ -109,9 +109,15 @@ export function Footer() {
   );
 }
 
+/** Honours prefers-reduced-motion for every motion component below it:
+ *  transforms are skipped and only opacity fades remain. */
+export function MotionProvider({ children }: { children: React.ReactNode }) {
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+}
+
+/** Fades content in as it scrolls into view. Always the same element on the
+ *  server and the client, so reduced motion can't cause a hydration mismatch. */
 export function Reveal({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}

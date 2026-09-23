@@ -15,7 +15,7 @@ export function HowItWorks() {
     { n: "03", title: "Answers cite their sources", body: "The model — or the free mock provider — answers only from those passages, and the answer lists the articles it actually used." },
   ];
   return (
-    <div className="grid gap-6 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
       {steps.map((step, index) => (
         <Reveal key={step.n} delay={index * 0.06} className="relative pl-12">
           <span className="absolute top-0 left-0 font-mono text-sm text-[var(--color-accent)]">{step.n}</span>
@@ -35,7 +35,7 @@ export function KnowledgeBaseShowcase() {
     { title: "Billing FAQ", category: "Billing", updated: "last week" },
   ];
   return (
-    <div className="grid items-center gap-8 lg:grid-cols-2">
+    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
       <div>
         <ul className="space-y-3 text-sm text-[var(--color-ink-muted)]">
           {[
@@ -82,7 +82,7 @@ export function KnowledgeBaseShowcase() {
 
 export function WidgetShowcase() {
   return (
-    <div className="grid items-center gap-8 lg:grid-cols-2">
+    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
       <Reveal>
         <div className="relative h-[420px] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[#f5f6f9]">
           <div className="border-b border-[#e3e6ee] bg-white px-4 py-3 text-[13px] font-semibold text-[#1b2230]">yourcompany.com/help</div>
@@ -156,7 +156,7 @@ const { answer, sources, status } = await response.json();`,
 export function DeveloperApi() {
   const [tab, setTab] = useState("curl");
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
         <div role="tablist" aria-label="Language" className="mb-3 flex gap-1">
           {Object.keys(SNIPPETS).map((name) => (
@@ -206,7 +206,7 @@ export function UseCases() {
     { icon: GraduationCap, title: "Course platforms", body: "Students ask about schedules and requirements; answers cite the syllabus." },
   ];
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cases.map((item, index) => (
         <Reveal key={item.title} delay={index * 0.05}>
           <div className="h-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 transition-colors hover:border-[var(--color-border-strong)]">
@@ -228,7 +228,7 @@ export function Pricing() {
   ];
   return (
     <div>
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {plans.map((plan) => (
           <div key={plan.name} className={cn("relative flex flex-col rounded-2xl border p-6", plan.highlight ? "border-[#1b4a55] bg-[var(--color-surface-raised)] shadow-[0_24px_70px_-50px_rgba(44,198,224,1)]" : "border-[var(--color-border)] bg-[var(--color-surface)]")}>
             {plan.highlight ? <span className="absolute -top-2.5 left-6"><Badge tone="accent">Most popular</Badge></span> : null}

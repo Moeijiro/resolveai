@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Footer, Navbar, Reveal, Section, SectionHeading } from "@/components/site/chrome";
+import { Footer, MotionProvider, Navbar, Reveal, Section, SectionHeading } from "@/components/site/chrome";
 import { Pipeline } from "@/components/site/pipeline";
 import { ProductDemo } from "@/components/site/product-demo";
 import { Cta, DeveloperApi, Faq, HowItWorks, KnowledgeBaseShowcase, Pricing, UseCases, WidgetShowcase } from "@/components/site/sections";
@@ -8,13 +8,13 @@ import { Button } from "@/components/ui";
 
 export default function HomePage() {
   return (
-    <>
+    <MotionProvider>
       <Navbar />
       <main id="main">
         <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade" aria-hidden />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] glow" aria-hidden />
-          <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 sm:pt-20 lg:grid-cols-[1.05fr_1fr]">
+          <div className="relative mx-auto grid grid-cols-1 w-full max-w-6xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 sm:pt-20 lg:grid-cols-[1.05fr_1fr]">
             <div>
               <p className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/70 px-3 py-1 text-xs text-[var(--color-ink-muted)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-answered)]" aria-hidden />
@@ -89,6 +89,6 @@ export default function HomePage() {
         <Section className="border-t-0"><Cta /></Section>
       </main>
       <Footer />
-    </>
+    </MotionProvider>
   );
 }

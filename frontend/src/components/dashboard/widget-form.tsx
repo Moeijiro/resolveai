@@ -47,7 +47,7 @@ export function WidgetForm({ knowledgeBaseId, initial }: { knowledgeBaseId: numb
   const left = config.position === "bottom-left";
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1fr]">
       <Card>
         <CardHeader title="Appearance and access" description="Changes apply to every page the widget is embedded on." />
         <form onSubmit={save}>
@@ -59,7 +59,7 @@ export function WidgetForm({ knowledgeBaseId, initial }: { knowledgeBaseId: numb
             <Field label="Welcome message" htmlFor="w-welcome">
               <Textarea id="w-welcome" required maxLength={300} value={config.welcome_message} onChange={(e) => update("welcome_message", e.target.value)} className="min-h-20" />
             </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Accent colour" htmlFor="w-accent">
                 <div className="flex gap-2">
                   <input
