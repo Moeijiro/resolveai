@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     # --- Retrieval ---------------------------------------------------------
     retrieval_top_k: int = Field(default=4, ge=1, le=10)
     retrieval_min_score: float = Field(default=1.2, ge=0)
+    retrieval_min_coverage: float = Field(default=0.5, ge=0, le=1)
 
     # --- Limits --------------------------------------------------------------
     max_question_chars: int = Field(default=500, ge=20, le=4000)

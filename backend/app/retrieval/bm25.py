@@ -23,6 +23,10 @@ from app.retrieval.text import tokenize
 K1 = 1.4
 B = 0.75
 TITLE_WEIGHT = 2
+# Passages scoring below this share of the best one are dropped: they are the
+# long tail that matched a single word, and sending them to a model invites it
+# to use them.
+RELATIVE_CUTOFF = 0.4
 
 
 class BM25Retriever:
@@ -71,4 +75,17 @@ class BM25Retriever:
                 scored.append(ScoredPassage(self.passages[index], round(score, 3)))
 
         scored.sort(key=lambda item: item.score, reverse=True)
-        return RetrievalResult(passages=scored[:top_k])
+        if not scored:
+            return RetrievalResult(query_terms=sorted(set(terms)))
+
+        best = scored[0].score
+        kept = [item for item in scored if item.score >= best * RELATIVE_CUTOFF][:top_k]
+
+        distinct = set(terms)
+        best_index = self.passages.index(kept[0].passage)
+        covered = {term for term in distinct if term in self.documents[best_index]}
+        return RetrievalResult(
+            passages=kept,
+            coverage=round(len(covered) / len(distinct), 3),
+            query_terms=sorted(distinct),
+        )

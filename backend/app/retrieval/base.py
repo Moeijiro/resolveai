@@ -22,6 +22,11 @@ class ScoredPassage:
 @dataclass(slots=True)
 class RetrievalResult:
     passages: list[ScoredPassage] = field(default_factory=list)
+    # Share of the question's distinct terms found in the best passage, 0..1.
+    # A high BM25 score can come from a single common word; coverage is what
+    # tells "about the same thing" apart from "happens to share a word".
+    coverage: float = 0.0
+    query_terms: list[str] = field(default_factory=list)
 
     @property
     def top_score(self) -> float:

@@ -5,11 +5,14 @@
 
 Two decisions carry most of the product's honesty:
 
-* **A weak retrieval never reaches the model.** If the best passage scores
-  below ``RETRIEVAL_MIN_SCORE`` the question is marked *unresolved* and the
-  visitor is told plainly that the documentation does not cover it. Sending
-  the model irrelevant context is how assistants end up confidently wrong —
-  and it costs money to be wrong.
+* **A weak retrieval never reaches the model.** The best passage must score
+  at least ``RETRIEVAL_MIN_SCORE`` *and* contain at least
+  ``RETRIEVAL_MIN_COVERAGE`` of the question's distinct terms. Score alone is
+  not enough: "Do you support single sign-on with Okta?" scores well against
+  a paragraph about *signing in*, on the strength of one word. Below either
+  bar the question is marked *unresolved* and the visitor is told plainly that
+  the documentation does not cover it. Sending a model loosely related context
+  is how assistants end up confidently wrong — and it costs money to be wrong.
 * **Citations are verified, not trusted.** A source is shown only if it was
   both retrieved *and* named by the provider. A model cannot cite an article
   that was not in its context, however plausible the id.
@@ -69,11 +72,16 @@ async def answer_question(
     result = AnswerResult(
         answer=NOT_FOUND_MESSAGE,
         status=ConversationStatus.UNRESOLVED,
-        confidence=retrieval.top_score,
+        confidence=retrieval.coverage,
         provider=provider.name,
     )
 
-    if retrieval.passages and retrieval.top_score >= settings.retrieval_min_score:
+    confident = (
+        bool(retrieval.passages)
+        and retrieval.top_score >= settings.retrieval_min_score
+        and retrieval.coverage >= settings.retrieval_min_coverage
+    )
+    if confident:
         try:
             reply = await provider.answer(question, retrieval.passages)
         except ProviderError as exc:

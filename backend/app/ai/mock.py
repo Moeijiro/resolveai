@@ -27,8 +27,13 @@ class MockProvider:
     async def answer(self, question: str, passages: list[ScoredPassage]) -> ProviderAnswer:
         query_terms = set(tokenize(question))
         candidates: list[tuple[float, int, int, str]] = []
+        best_score = passages[0].score if passages else 0.0
 
         for rank, item in enumerate(passages):
+            # Supporting sentences come from passages close to the best one;
+            # a passage that merely shares a word does not get quoted.
+            if item.score < best_score * 0.6:
+                continue
             for position, sentence in enumerate(SENTENCE_RE.split(item.passage.text)):
                 sentence = sentence.strip().lstrip("-*0123456789. ").strip()
                 if len(sentence) < 20:
