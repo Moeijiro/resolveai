@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Northwind Cloud — Documentation (ResolveAI demo site)</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: #1b2230; background: #f7f8fb; }
+    header { background: #fff; border-bottom: 1px solid #e6e9f0; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-weight: 700; letter-spacing: -.02em; display: flex; align-items: center; gap: 10px; }
+    .logo i { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg,#3b6cf6,#2cc6e0); display: inline-block; }
+    nav a { color: #56607a; text-decoration: none; margin-left: 22px; font-size: 14px; }
+    .hero { padding: 64px 0 40px; }
+    h1 { font-size: 40px; letter-spacing: -.03em; margin: 0 0 12px; }
+    .lead { font-size: 17px; color: #56607a; max-width: 560px; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; padding: 24px 0 80px; }
+    .card { background: #fff; border: 1px solid #e6e9f0; border-radius: 12px; padding: 18px; }
+    .card h3 { margin: 0 0 6px; font-size: 15px; }
+    .card p { margin: 0; color: #56607a; font-size: 13.5px; line-height: 1.55; }
+    .banner { background: #fff8e6; border: 1px solid #f2dfad; color: #7a5a12; font-size: 12.5px; padding: 8px 12px; border-radius: 8px; display: inline-block; margin-bottom: 18px; }
+    .hint { margin-top: 20px; font-size: 14px; color: #56607a; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <span class="logo"><i></i>Northwind Cloud</span>
+        <div><a href="#">Product</a><a href="#">Docs</a><a href="#">Pricing</a><a href="#">Status</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <span class="banner">Demo site — a fictional company used to show the ResolveAI widget. Northwind Cloud is not a real product.</span>
+      <h1>Northwind Cloud documentation</h1>
+      <p class="lead">Deploy apps, manage API keys and wire up webhooks. Can't find something? Ask the assistant in the corner — it answers from these docs.</p>
+      <p class="hint">Try: <em>“How do I create an API key?”</em> · <em>“Why is my webhook returning 401?”</em> · <em>“Do you support SSO?”</em></p>
+    </section>
+    <section class="grid">
+      <div class="card"><h3>Getting started</h3><p>Create a project, install the CLI and ship your first deployment.</p></div>
+      <div class="card"><h3>Authentication</h3><p>Sign in, manage sessions and enable two-factor authentication.</p></div>
+      <div class="card"><h3>API keys</h3><p>Create, rotate and revoke keys for server-side access.</p></div>
+      <div class="card"><h3>Webhooks</h3><p>Receive signed events and verify their signatures.</p></div>
+      <div class="card"><h3>Billing FAQ</h3><p>Plans, invoices, and what happens when you change tier.</p></div>
+      <div class="card"><h3>Troubleshooting</h3><p>Common errors and how to fix them.</p></div>
+    </section>
+  </main>
+  <script>
+    // The demo page reads the project id from ?project= so any knowledge base
+    // can be previewed; it defaults to the seeded demo one.
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var tag = document.createElement("script");
+      tag.src = "/widget.js";
+      tag.async = true;
+      tag.setAttribute("data-project", params.get("project") || "kb_demo_northwind");
+      document.body.appendChild(tag);
+    })();
+  </script>
+</body>
+</html>
