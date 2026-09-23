@@ -16,9 +16,13 @@ from app.ai.base import ProviderAnswer
 from app.retrieval.base import ScoredPassage
 from app.retrieval.text import tokenize
 
-SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n+")
-MAX_SENTENCES = 4
-MIN_OVERLAP = 1
+SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n{2,}")
+# A single newline inside a paragraph is a soft wrap, not a sentence break.
+SOFT_WRAP_RE = re.compile(r"(?<!\n)\n(?!\n)")
+# Answers are shown as plain text (the widget never renders HTML), so the
+# Markdown emphasis in the source articles would appear as literal asterisks.
+MARKDOWN_RE = re.compile(r"\*\*|__|`")
+MAX_SENTENCES = 3
 
 
 class MockProvider:
@@ -26,6 +30,9 @@ class MockProvider:
 
     async def answer(self, question: str, passages: list[ScoredPassage]) -> ProviderAnswer:
         query_terms = set(tokenize(question))
+        # With three or more terms, a supporting sentence must share at least
+        # two of them; one shared word is how off-topic lines sneak in.
+        min_overlap = 2 if len(query_terms) >= 3 else 1
         candidates: list[tuple[float, int, int, str]] = []
         best_score = passages[0].score if passages else 0.0
 
@@ -34,16 +41,22 @@ class MockProvider:
             # a passage that merely shares a word does not get quoted.
             if item.score < best_score * 0.6:
                 continue
-            for position, sentence in enumerate(SENTENCE_RE.split(item.passage.text)):
-                sentence = sentence.strip().lstrip("-*0123456789. ").strip()
+            # A sentence under "## Webhook returning 401" is about that, even
+            # if the sentence itself only says "If your endpoint answers 401".
+            heading_terms = set(tokenize(item.passage.heading or ""))
+            text = SOFT_WRAP_RE.sub(" ", item.passage.text)
+            for position, sentence in enumerate(SENTENCE_RE.split(text)):
+                sentence = MARKDOWN_RE.sub("", sentence).strip().lstrip("-*0123456789. ").strip()
                 if len(sentence) < 20:
                     continue
-                overlap = len(query_terms & set(tokenize(sentence)))
-                if overlap < MIN_OVERLAP:
+                own = query_terms & set(tokenize(sentence))
+                combined = own | (query_terms & heading_terms)
+                if not own or len(combined) < min_overlap:
                     continue
-                # Prefer overlap, then the better-ranked passage, then order
-                # within the passage so steps stay in sequence.
-                score = overlap * 10 + item.score - rank
+                # Prefer the sentence's own overlap, then its heading, then the
+                # better-ranked passage; order within the passage is restored
+                # afterwards so steps stay in sequence.
+                score = len(own) * 10 + len(combined) * 3 + item.score - rank
                 candidates.append((score, rank, position, sentence))
 
         if not candidates:
