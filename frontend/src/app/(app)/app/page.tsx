@@ -51,7 +51,7 @@ export default function OverviewPage() {
         <Stat label="Questions" value={String(data.questions_total)} hint={`${data.questions_today} today`} />
         <Stat label="Answer rate" value={data.answer_rate == null ? "—" : `${Math.round(data.answer_rate * 100)}%`} hint="answered ÷ all questions" />
         <Stat label="Unresolved" value={String(data.unresolved)} hint="not covered by the docs" />
-        <Stat label="Avg. response" value={data.avg_response_ms == null ? "—" : `${Math.round(data.avg_response_ms)} ms`} hint={`${data.articles} articles · ${data.knowledge_bases} KB`} />
+        <Stat label="Avg. response" value={data.avg_response_ms == null ? "—" : data.avg_response_ms < 1 ? "<1 ms" : `${Math.round(data.avg_response_ms)} ms`} hint={`${data.articles} articles · ${data.knowledge_bases} KB`} />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1.6fr_1fr]">

@@ -77,7 +77,7 @@ def overview(db: Session, user_id: int) -> dict[str, Any]:
         "answered": answered,
         "unresolved": count(Conversation.status == ConversationStatus.UNRESOLVED.value),
         "errors": count(Conversation.status == ConversationStatus.ERROR.value),
-        "answer_rate": round(answered / total * 100, 1) if total else None,
+        "answer_rate": round(answered / total, 3) if total else None,
         "avg_response_ms": int(avg_ms) if avg_ms is not None else None,
         "series": series,
         "top_articles": [

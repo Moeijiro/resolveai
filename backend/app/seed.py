@@ -12,10 +12,11 @@ from __future__ import annotations
 import argparse
 import asyncio
 import sys
+from datetime import datetime, timedelta, timezone
 
 from app.core.security import hash_password
 from app.db.session import SessionLocal, init_db
-from app.models import Article, Channel, KnowledgeBase, User, WidgetConfig
+from app.models import Article, Channel, Conversation, KnowledgeBase, User, WidgetConfig
 from app.retrieval.index import clear_cache
 from app.services.answering import answer_question
 
@@ -209,11 +210,22 @@ async def seed(reset: bool) -> int:
             db.add(Article(knowledge_base_id=kb.id, title=title, category=category, content=content.strip()))
         db.commit()
 
+        # Every question really goes through the pipeline (twice, from different
+        # channels); only the timestamps are back-dated afterwards, so the
+        # 14-day chart has a history to draw.
         channels = [Channel.WIDGET, Channel.PREVIEW, Channel.API]
+        asked = QUESTIONS + QUESTIONS[::-1]
+        now = datetime.now(timezone.utc)
         outcomes = []
-        for index, question in enumerate(QUESTIONS):
+        for index, question in enumerate(asked):
             result = await answer_question(db, kb, question, channels[index % len(channels)])
-            outcomes.append((question, str(result.status), [s["title"] for s in result.sources]))
+            if index < len(QUESTIONS):
+                outcomes.append((question, str(result.status), [s["title"] for s in result.sources]))
+            days_ago = 13 - index * 14 // len(asked)
+            conversation = db.get(Conversation, result.conversation_id)
+            if conversation is not None:
+                conversation.created_at = now - timedelta(days=days_ago, hours=(index * 5) % 9, minutes=index * 7 % 60)
+        db.commit()
 
     print("Demo data ready (Northwind Cloud is a fictional product).")
     print(f"  email:    {DEMO_EMAIL}")
