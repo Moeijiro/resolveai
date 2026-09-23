@@ -224,7 +224,9 @@ async def seed(reset: bool) -> int:
             days_ago = 13 - index * 14 // len(asked)
             conversation = db.get(Conversation, result.conversation_id)
             if conversation is not None:
-                conversation.created_at = now - timedelta(days=days_ago, hours=(index * 5) % 9, minutes=index * 7 % 60)
+                # Today's rows only go back minutes, so they stay on today.
+                offset = timedelta(hours=(index * 5) % 9, minutes=index * 7 % 60) if days_ago else timedelta(minutes=index)
+                conversation.created_at = now - timedelta(days=days_ago) - offset
         db.commit()
 
     print("Demo data ready (Northwind Cloud is a fictional product).")
