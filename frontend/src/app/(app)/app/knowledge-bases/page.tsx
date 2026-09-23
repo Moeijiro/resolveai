@@ -42,7 +42,7 @@ export default function KnowledgeBasesPage() {
 
       {creating ? (
         <Card className="mb-4">
-          <form onSubmit={create} className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+          <form onSubmit={create} className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto] sm:items-end">
             <Field label="Name" htmlFor="kb-name">
               <Input id="kb-name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Documentation" autoFocus />
             </Field>

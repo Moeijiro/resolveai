@@ -62,7 +62,7 @@ def install_error_handlers(app: FastAPI) -> None:
         fields = [
             {
                 "field": ".".join(str(part) for part in error["loc"][1:]) or "body",
-                "message": error["msg"],
+                "message": error["msg"].removeprefix("Value error, "),
             }
             for error in exc.errors()
         ]

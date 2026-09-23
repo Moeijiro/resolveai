@@ -57,7 +57,7 @@ export default function ApiKeysPage() {
         </Card>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.2fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <Card>
           <CardHeader title="Keys" description="Stored as SHA-256 digests; only the prefix is kept readable." />
           <form onSubmit={create} className="flex gap-2 border-b border-[var(--color-border)] px-5 py-3">

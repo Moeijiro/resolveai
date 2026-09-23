@@ -47,7 +47,7 @@ export function WidgetForm({ knowledgeBaseId, initial }: { knowledgeBaseId: numb
   const left = config.position === "bottom-left";
 
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1fr]">
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <Card>
         <CardHeader title="Appearance and access" description="Changes apply to every page the widget is embedded on." />
         <form onSubmit={save}>

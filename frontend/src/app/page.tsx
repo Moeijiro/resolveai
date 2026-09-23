@@ -14,7 +14,7 @@ export default function HomePage() {
         <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade" aria-hidden />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] glow" aria-hidden />
-          <div className="relative mx-auto grid grid-cols-1 w-full max-w-6xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 sm:pt-20 lg:grid-cols-[1.05fr_1fr]">
+          <div className="relative mx-auto grid grid-cols-1 w-full max-w-6xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 sm:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
             <div>
               <p className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/70 px-3 py-1 text-xs text-[var(--color-ink-muted)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-answered)]" aria-hidden />

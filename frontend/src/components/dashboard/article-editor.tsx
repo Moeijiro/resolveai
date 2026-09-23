@@ -92,7 +92,7 @@ export function ArticleEditor({
           <Spinner label="Loading article" />
         ) : (
           <form onSubmit={save} className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_180px]">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_180px]">
               <Field label="Title" htmlFor="article-title">
                 <Input id="article-title" required maxLength={200} value={title} onChange={(e) => setTitle(e.target.value)} />
               </Field>

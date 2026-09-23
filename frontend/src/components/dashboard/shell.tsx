@@ -99,7 +99,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionContext.Provider value={user}>
-      <div className="min-h-screen lg:grid lg:grid-cols-[232px_1fr]">
+      <div className="min-h-screen lg:grid lg:grid-cols-[232px_minmax(0,1fr)]">
         <aside className="sticky top-0 hidden h-screen border-r border-[var(--color-border)] bg-[var(--color-surface)] lg:block">{nav}</aside>
         {open ? (
           <div className="fixed inset-0 z-50 lg:hidden">
