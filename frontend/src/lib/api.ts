@@ -79,6 +79,8 @@ export const api = {
   knowledgeBase: (id: number) => request<KnowledgeBase>(`/api/knowledge-bases/${id}`),
   createKnowledgeBase: (name: string, description?: string) =>
     request<KnowledgeBase>("/api/knowledge-bases", { method: "POST", body: json({ name, description: description || null }) }),
+  updateKnowledgeBase: (id: number, body: Partial<{ name: string; description: string | null; status: "active" | "paused" }>) =>
+    request<KnowledgeBase>(`/api/knowledge-bases/${id}`, { method: "PATCH", body: json(body) }),
   deleteKnowledgeBase: (id: number) => request<void>(`/api/knowledge-bases/${id}`, { method: "DELETE" }),
 
   articles: (kbId: number, params: { q?: string; category?: string } = {}) =>
