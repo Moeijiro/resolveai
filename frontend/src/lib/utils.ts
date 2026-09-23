@@ -15,7 +15,7 @@ const UNITS: Array<[Intl.RelativeTimeFormatUnit, number]> = [
 export function relativeTime(iso: string | null | undefined): string {
   if (!iso) return "never";
   const seconds = (Date.now() - new Date(iso).getTime()) / 1000;
-  if (seconds < 45) return "just now";
+  if (seconds < 60) return "just now";
   for (const [unit, size] of UNITS) {
     if (seconds >= size) {
       const value = Math.round(seconds / size);
@@ -23,11 +23,11 @@ export function relativeTime(iso: string | null | undefined): string {
       return RELATIVE.format(-value, unit);
     }
   }
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  return new Date(iso).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" });
 }
 
 export function absoluteTime(iso: string | null | undefined): string {
-  return iso ? new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "—";
+  return iso ? new Date(iso).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" }) : "—";
 }
 
 export const STATUS_TONE: Record<string, "answered" | "unresolved" | "error"> = {
