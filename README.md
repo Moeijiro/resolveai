@@ -1,5 +1,7 @@
 # ResolveAI
 
+**Portfolio case study:** [moeijiro.github.io/portfolio/projects/resolveai](https://moeijiro.github.io/portfolio/projects/resolveai/) · **Live demo:** not hosted — the app runs locally in a few commands (see below).
+
 **Turn your documentation into instant answers.** ResolveAI is a customer-support
 answer engine: you give it your help articles, and it answers questions from them
 through an embeddable chat widget and a developer API. Each answer lists the
